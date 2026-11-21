@@ -3,7 +3,7 @@
 
 # Sichuan Mahjong (Sichuan Bloody Rules)
 
-This is an offline desktop Sichuan Mahjong (*Sichuan Bloody Rules*, *Swap Three Tiles*) game. It is completely free, requires no registration or login, works offline with no ads, requests zero permissions, and collects no data—just open and play. Perfect for a quick solo break or sharpening your skills.
+This is an offline desktop **四川麻将（血战到底·换三张）单机HTML游戏** |Sichuan Mahjong (*Sichuan Bloody Rules*, *Swap Three Tiles*) game. It is completely free, requires no registration or login, works offline with no ads, requests zero permissions, and collects no data—just open and play. Perfect for a quick solo break or sharpening your skills.
 
 You play against three "AI" opponents powered by Depth-First Search (DFS) and a suite of heuristic algorithms rather than modern generative AI models. Every deal uses a truly pure and fair random shuffle with zero programmatic or manual tampering. Just like a human player, each bot can only see its own hand, all players' open melds, and the discards on the table—it has no access to other players' concealed hands or the remaining wall, relying purely on visible information for deduction and probability estimation. Bots operate independently and never share data with one another.
 
