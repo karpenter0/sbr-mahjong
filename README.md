@@ -1,3 +1,6 @@
+- 🎮 **Play Online (GitHub Pages)**: [https://karpenter0.github.io/sbr-mahjong/](https://karpenter0.github.io/sbr-mahjong/)
+- ⬇️ **Download Offline Version (v1.0.0)**: [Download mahjong.html](https://github.com/karpenter0/sbr-mahjong/releases/download/v1.0.0/mahjong.html)
+
 # Sichuan Mahjong (Sichuan Bloody Rules)
 
 This is an offline desktop Sichuan Mahjong (*Sichuan Bloody Rules*, *Swap Three Tiles*) game. It is completely free, requires no registration or login, works offline with no ads, requests zero permissions, and collects no data—just open and play. Perfect for a quick solo break or sharpening your skills.
