@@ -1,4 +1,4 @@
-- 🎮 **Play Online (GitHub Pages)**: [https://karpenter0.github.io/sbr-mahjong/](https://karpenter0.github.io/sbr-mahjong/)
+- 🎮 **Play Online (GitHub Pages)**: [https://karpenter0.github.io/sbr-mahjong/index.html](https://karpenter0.github.io/sbr-mahjong/index.html)
 - ⬇️ **Download Offline Version (v1.0.0)**: [Download mahjong.html](https://github.com/karpenter0/sbr-mahjong/releases/download/v1.0.0/mahjong.html)
 
 # Sichuan Mahjong (Sichuan Bloody Rules)
