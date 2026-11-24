@@ -723,6 +723,8 @@ body {
 
 .player-seat.seat-east .hand-row,
 .player-seat.seat-west .hand-row {
+  position: relative;
+  z-index: 6;
   flex: 0 0 auto;
   align-items: flex-end;
 }
@@ -731,6 +733,12 @@ body {
 .player-seat.seat-west .melds-container {
   flex: 0 0 auto;
   margin-left: 14px;
+  transition: margin-left 0.18s ease;
+}
+
+.player-seat.seat-east.has-winning-tile .melds-container,
+.player-seat.seat-west.has-winning-tile .melds-container {
+  margin-left: 28px;
 }
 
 .player-seat.seat-east .melds-container:empty,
@@ -1817,6 +1825,18 @@ body {
   text-align: center;
   z-index: 3;
   transform: rotate(-90deg);
+}
+
+.mahjong-tile.winning-tile.dian-pao-win-tile::after {
+  top: 0;
+  left: 0;
+  width: 30px;
+  min-width: 0;
+  padding: 0;
+  border-radius: 5px;
+  line-height: 15px;
+  white-space: nowrap;
+  transform: translate(-50%, -50%) rotate(-90deg);
 }
 
 @keyframes pulse-discard {
@@ -3446,7 +3466,7 @@ body {
     </form>
   </dialog>
   <dialog id="about-dialog" aria-labelledby="about-title">
-    <div class="settings-heading"><span class="settings-heading-icon" aria-hidden="true">🀄</span><div><h2 id="about-title">关于四川麻将</h2><p>血战到底 · 换三张</p></div><span class="about-version">V1.0</span></div>
+    <div class="settings-heading"><span class="settings-heading-icon" aria-hidden="true">🀄</span><div><h2 id="about-title">关于四川麻将</h2><p>血战到底 · 换三张</p></div><span class="about-version">v1.0.0</span></div>
     <p class="about-description">这是一个桌面四川麻将（血战到底，换三张）单机版游戏，无任何费用，无需注册/登录，无需联网，无广告，不申请任何权限，不采集任何数据，打开即玩。适合个人随时消遣，顺便练手。改进建议均无任欢迎。</p>
     <p class="about-description">本版本支持整场规则配置、天地胡、夹心五、卡二条及点杠花付款选项。</p>
     <div class="about-meta"><div><span>作者</span><strong>karpenter0</strong></div><div><span>联系方式</span><a href="mailto:karpenter0@gmail.com">karpenter0@gmail.com</a></div></div>
@@ -11104,6 +11124,7 @@ SOFTWARE.</pre></details>
         const dianPaoWinTile = huDetails && !huDetails.isZiMo ? huDetails.winTile : null;
         const sideTile = player.drawnTile || dianPaoWinTile;
         const isWinningTile = !!huDetails && !!sideTile && (huDetails.isZiMo || sideTile === huDetails.winTile || sideTile.code === huDetails.winTile?.code);
+        playerBox.classList.toggle("has-winning-tile", isWinningTile);
         const drawnContainer = playerBox.querySelector(".drawn-tile-container");
         if (sideTile) {
           if (drawnContainer) {
@@ -11112,7 +11133,8 @@ SOFTWARE.</pre></details>
             const isPlaySelected = Boolean(selectedPlayTile && selectedPlayTile.id === sideTile.id);
             const revealWinningTile = !huDetails?.isZiMo || showFront;
             const isBack = isWinningTile ? !revealWinningTile : !showFront;
-            const drawnKey = `${sideTile.id}:${isBack}:${showFront && isQue}:${isWinningTile}:${isWinningTile ? Boolean(huDetails.isZiMo) : false}`;
+            const winLabel = isWinningTile ? huDetails.isZiMo ? "\u6478" : _TableRenderer._getDianPaoWinLabel(player.seat, huDetails) : "";
+            const drawnKey = `${sideTile.id}:${isBack}:${showFront && isQue}:${isWinningTile}:${winLabel}`;
             let drawnEl = drawnContainer.dataset.drawnKey === drawnKey ? drawnContainer.firstElementChild : null;
             if (drawnEl) {
               drawnEl.classList.toggle("selected", isPlaySelected);
@@ -11129,7 +11151,7 @@ SOFTWARE.</pre></details>
                 customClass: isWinningTile ? `winning-tile ${huDetails.isZiMo ? "zi-mo-win-tile" : "dian-pao-win-tile"}` : showFront ? "" : "tile-standing"
               });
               if (isWinningTile) {
-                drawnEl.dataset.winLabel = huDetails.isZiMo ? "\u6478" : "\u80E1";
+                drawnEl.dataset.winLabel = winLabel;
                 drawnEl.title = `${huDetails.isZiMo ? "\u81EA\u6478\u80E1" : "\u70B9\u70AE\u80E1"}\uFF1A${sideTile.displayName}`;
               }
               drawnContainer.appendChild(drawnEl);
@@ -11396,6 +11418,18 @@ SOFTWARE.</pre></details>
       if (compassEl) {
         compassEl.dataset.turn = gameState.currentTurnSeat;
       }
+    }
+    /**
+     * 计算点炮胡角标文本：从胡牌方视角，箭头指向放铳者方位。
+     */
+    static _getDianPaoWinLabel(winnerSeat, huDetails) {
+      const loserSeat = huDetails?.loserSeat ?? huDetails?.scoreLog?.loserSeat;
+      if (!Number.isInteger(loserSeat) || !Number.isInteger(winnerSeat)) return "\u80E1";
+      const diff = (loserSeat - winnerSeat + 4) % 4;
+      if (diff === 1) return "\u80E1\u2192";
+      if (diff === 2) return "\u80E1\u2191";
+      if (diff === 3) return "\u80E1\u2190";
+      return "\u80E1";
     }
   };
 
@@ -12820,7 +12854,8 @@ SOFTWARE.</pre></details>
           huRank: p.huRank,
           huDetails: p.huDetails ? {
             isZiMo: !!p.huDetails.isZiMo,
-            winTileCode: p.huDetails.winTile ? p.huDetails.winTile.code : null
+            winTileCode: p.huDetails.winTile ? p.huDetails.winTile.code : null,
+            loserSeat: !p.huDetails.isZiMo ? p.huDetails.loserSeat ?? p.huDetails.scoreLog?.loserSeat ?? null : null
           } : null,
           handCodes: p.hand.map((t) => t.code),
           melds,
@@ -13045,7 +13080,8 @@ SOFTWARE.</pre></details>
           huRank: p.huRank,
           huDetails: p.huDetails ? {
             isZiMo: !!p.huDetails.isZiMo,
-            winTile: p.huDetails.winTileCode ? new Tile(p.huDetails.winTileCode, `rp-${p.seat}-win`) : null
+            winTile: p.huDetails.winTileCode ? new Tile(p.huDetails.winTileCode, `rp-${p.seat}-win`) : null,
+            loserSeat: p.huDetails.loserSeat ?? null
           } : null,
           // 对手暗手牌以"背牌占位"（数量保持一致，牌面由渲染器自动盖住）
           hand,
