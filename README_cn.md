@@ -1,4 +1,4 @@
-- 🎮 **点这里直接玩（在线版）**：[https://karpenter0.github.io/sbr-mahjong/](https://karpenter0.github.io/sbr-mahjong/)
+- 🎮 **点这里直接玩（在线版）**：[https://karpenter0.github.io/sbr-mahjong/index.html](https://karpenter0.github.io/sbr-mahjong/index.html)
 - ⬇️ **点这里下载离线版（v1.0.0）**：[点击下载 mahjong.html](https://github.com/karpenter0/sbr-mahjong/releases/download/v1.0.0/mahjong.html)
 
 这是一个桌面四川麻将（血战到底，换三张）单机版游戏，无任何费用，无需注册/登录，无需联网，无广告，不申请任何权限，不采集任何数据，打开即玩。适合个人随时消遣，顺便练手。
